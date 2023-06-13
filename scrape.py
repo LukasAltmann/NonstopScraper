@@ -91,5 +91,6 @@ def translate_file(filename):
         outfile.write('[')
         for event in items:
             outfile.write(json.dumps(event.__dict__, ensure_ascii=False))
-            outfile.write(',')
+            if event != items[-1]:
+                outfile.write(',')
         outfile.write(']')
