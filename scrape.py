@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
 
-def scrape():
+def scrape(amount):
     def write_to_file(name, content):
         f = open("input/" + name, "w")
         f.write(content)
@@ -24,7 +24,7 @@ def scrape():
 
     select = Select(driver.find_element(By.ID, 'input0'))
 
-    upper_bound = 14
+    upper_bound = amount
     if len(select.options) - 1 < upper_bound:
         upper_bound = len(select.options) - 1
 

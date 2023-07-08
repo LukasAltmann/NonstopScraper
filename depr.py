@@ -1,14 +1,16 @@
+import csv
 import json
 
 import requests
 from bs4 import BeautifulSoup
+from classes import Event
 
-from classes import Event, EventEncoder
 
+def translate_file_depr(filename):
 
-def translate_file(filename):
     cinemas = ['Admiral Kino', 'Burg Kino', 'De France', 'Filmcasino', 'Filmhaus Kino Spittelberg', 'Gartenbaukino',
-               'Schikaneder', 'Stadtkino im Künstlerhaus', 'Top Kino', 'Votiv Kino']
+               'Schikaneder',
+               'Stadtkino im KÃ¼nstlerhaus', 'Top Kino', 'Votiv Kino']
 
     cinemas_dict = {'Admiral Kino': [],
                     'Burg Kino': [],
@@ -17,7 +19,7 @@ def translate_file(filename):
                     'Filmhaus Kino Spittelberg': [],
                     'Gartenbaukino': [],
                     'Schikaneder': [],
-                    'Stadtkino im Künstlerhaus': [],
+                    'Stadtkino im KÃ¼nstlerhaus': [],
                     'Top Kino': [],
                     'Votiv Kino': []}
 
@@ -44,14 +46,24 @@ def translate_file(filename):
                         cinemas_dict['Gartenbaukino'].append(event)
                     case 'Schikaneder':
                         cinemas_dict['Schikaneder'].append(event)
-                    case 'Stadtkino im Künstlerhaus':
-                        cinemas_dict['Stadtkino im Künstlerhaus'].append(event)
+                    case 'Stadtkino im KÃ¼nstlerhaus':
+                        cinemas_dict['Stadtkino im KÃ¼nstlerhaus'].append(event)
                     case 'Top Kino':
                         cinemas_dict['Top Kino'].append(event)
                     case 'Votiv Kino':
                         cinemas_dict['Votiv Kino'].append(event)
 
         return clean_events
+
+    # Adresse der Webseite
+    url = 'https://www.film.at/kinoprogramm/wien'
+    headers = {'Accept-Language': 'de-DE;q=0.8,de;q=0.7'}
+
+    # GET-Request ausführen
+    response = requests.get(url, headers=headers)
+
+    # BeautifulSoup HTML-Dokument aus dem Quelltext parsen
+    # html2 = BeautifulSoup(response.text, 'html.parser')
 
     with open('./input/' + filename) as fp:
         html = BeautifulSoup(fp, 'html.parser')
@@ -76,5 +88,10 @@ def translate_file(filename):
             items.extend(event_items_cleaned)
 
     with open('output/' + filename.replace('html', 'json'), 'w') as outfile:
-        json_object = json.dumps(cinemas_dict, indent=4, cls=EventEncoder)
-        outfile.write(json_object)
+        outfile.write('[')
+        for event in items:
+            outfile.write(json.dumps(event.__dict__, ensure_ascii=False))
+            if event != items[-1]:
+                outfile.write(',')
+        outfile.write(']')
+
