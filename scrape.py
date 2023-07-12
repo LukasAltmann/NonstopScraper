@@ -17,7 +17,7 @@ def scrape(amount):
 
     options = Options()
     options.headless = True
-    driver = webdriver.Chrome("/usr/bin/chromedriver", options=options)
+    driver = webdriver.Chrome(options=options)
 
     driver.get('https://www.film.at/kinoprogramm/wien')
 
