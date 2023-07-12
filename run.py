@@ -9,7 +9,7 @@ def delete_files(path):
         os.remove(f)
 
 
-amount = 7
+amount = 10
 input_directory = './input/'
 output_directory = './output/'
 
@@ -21,5 +21,5 @@ scrape(amount)
 for filename in os.listdir(input_directory):
     translate_file(filename)
 
-
+print()
 print('Successfully scraped and parsed ' + str(amount) + ' days of program')

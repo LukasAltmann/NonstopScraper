@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 
-
 def scrape(amount):
     def write_to_file(name, content):
         f = open("input/" + name, "w")
@@ -17,8 +16,8 @@ def scrape(amount):
         return parts[1] + '_' + parts[0] + '.html'
 
     options = Options()
-    options.add_argument('--headless=new')
-    driver = webdriver.Chrome(options=options)
+    options.headless = True
+    driver = webdriver.Chrome("/usr/bin/chromedriver", options=options)
 
     driver.get('https://www.film.at/kinoprogramm/wien')
 
@@ -30,7 +29,9 @@ def scrape(amount):
 
     for index in range(0, upper_bound):
         select.select_by_index(index)
+        time.sleep(1)
         filename = create_filename(select.options[index].text)
         write_to_file(filename, driver.page_source)
+        print('Scraped ' + filename)
 
 
