@@ -16,7 +16,10 @@ def scrape(amount):
         return parts[1] + '_' + parts[0] + '.html'
 
     options = Options()
+
+    options.add_argument('--no-sandbox')
     options.headless = True
+
     driver = webdriver.Chrome(options=options)
 
     driver.get('https://www.film.at/kinoprogramm/wien')
